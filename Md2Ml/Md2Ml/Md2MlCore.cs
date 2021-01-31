@@ -11,7 +11,19 @@ using System.IO;
 
 namespace Md2Ml
 {
-	public class Md2MlEngine : IDisposable
+  public interface IMd2Ml
+  {
+    void AddImage(Stream image);
+    void AddTableRow(Table table, List<string> values);
+    Paragraph CreateParagraph();
+    Paragraph CreateParagraph(ParaProperties properties);
+    Table CreateTable(int cols);
+    void MarkdownBulletedList(IMd2Ml core, List<string> bulletedItems);
+    void MarkdownNumberedList(IMd2Ml core, List<string> bulletedItems);
+    void WriteText(Paragraph paragraph, string text);
+    void WriteText(Paragraph paragraph, string text, FontProperties fontProperties);
+  }
+  public class Md2MlEngine : IMd2Ml, IDisposable
 	{
 		WordprocessingDocument package;
 		MainDocumentPart mainDocumentPart;
@@ -155,8 +167,8 @@ namespace Md2Ml
 			mainDocumentPart.AddHyperlinkRelationship(uri, true, relationshipId);
 		}
 
-		public void MarkdownNumberedList(Md2MlEngine core, List<string> bulletedItems) => MarkdownNumberedList(core, bulletedItems, "ListParagraph");
-		public void MarkdownNumberedList(Md2MlEngine core, List<string> bulletedItems, string paragraphStyle)
+		public void MarkdownNumberedList(IMd2Ml core, List<string> bulletedItems) => MarkdownNumberedList(core, bulletedItems, "ListParagraph");
+		public void MarkdownNumberedList(IMd2Ml core, List<string> bulletedItems, string paragraphStyle)
 		{
 			foreach (var item in bulletedItems)
 			{
@@ -209,8 +221,8 @@ namespace Md2Ml
 				paragraph1.Append(run1);
 			}
 		}
-		public void MarkdownBulletedList(Md2MlEngine core, List<string> bulletedItems) => MarkdownBulletedList(core, bulletedItems, "ListParagraph");
-		public void MarkdownBulletedList(Md2MlEngine core, List<string> bulletedItems, string paragraphStyle)
+		public void MarkdownBulletedList(IMd2Ml core, List<string> bulletedItems) => MarkdownBulletedList(core, bulletedItems, "ListParagraph");
+		public void MarkdownBulletedList(IMd2Ml core, List<string> bulletedItems, string paragraphStyle)
 		{
 			foreach (var item in bulletedItems)
 			{

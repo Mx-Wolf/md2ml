@@ -8,7 +8,7 @@ namespace Md2Ml
 {
 	class MarkdownStringParser
 	{
-		public static void Parse(Md2MlEngine engine, string mdText)
+		public static void Parse(IMd2Ml engine, string mdText)
 		{
 			var lineAndPattern = new List<KeyValuePair<ParaPattern, string[]>>();
 			var lines = mdText.Split('\n');
@@ -94,7 +94,7 @@ namespace Md2Ml
 			if (Table) { ProcessTable(engine, TableData); Table = false; }
 			if (OrderedList || UnorderedList) { ProcessBullets(engine, OrderedList ? NumberItems : BulletItems, OrderedList); OrderedList = false; UnorderedList = false; }
 		}
-		public static void ProcessBullets(Md2MlEngine core, List<string> bullets, bool ordered = false)
+		public static void ProcessBullets(IMd2Ml core, List<string> bullets, bool ordered = false)
 		{
 			if (bullets.Count != 0)
 			{
@@ -105,7 +105,7 @@ namespace Md2Ml
 				bullets.Clear();
 			}
 		}
-		public static void FormatText(Md2MlEngine core, Paragraph paragraph, string markdown, FontProperties fontProperties)
+		public static void FormatText(IMd2Ml core, Paragraph paragraph, string markdown, FontProperties fontProperties)
 		{
 			var hasPattern = PatternMatcher.HasPatterns(markdown);
 			while (hasPattern)
@@ -169,7 +169,7 @@ namespace Md2Ml
 			}
 			return str;
 		}
-		private static void ProcessTable(Md2MlEngine core, List<string> markdown)
+		private static void ProcessTable(IMd2Ml core, List<string> markdown)
 		{
 			var table = core.CreateTable(markdown.First().Trim('|').Split('|').Count());
 			core.AddTableRow(table, markdown.First().Trim(new char[] { '|' }).Split('|').ToList());
