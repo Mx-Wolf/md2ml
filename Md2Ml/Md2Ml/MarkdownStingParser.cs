@@ -1,12 +1,10 @@
 ﻿using DocumentFormat.OpenXml.Wordprocessing;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Md2Ml
 {
-	class MarkdownStringParser
+  class MarkdownStringParser
 	{
 		public static void Parse(IMd2Ml engine, string mdText)
 		{
@@ -99,9 +97,9 @@ namespace Md2Ml
 			if (bullets.Count != 0)
 			{
 				if (ordered)
-					core.MarkdownNumberedList(core, bullets);
+					core.MarkdownNumberedList(bullets);
 				else
-					core.MarkdownBulletedList(core, bullets);
+					core.MarkdownBulletedList(bullets);
 				bullets.Clear();
 			}
 		}
